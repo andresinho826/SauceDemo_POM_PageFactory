@@ -1,0 +1,70 @@
+description = 'kantar'
+version = '1.0'
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:2.0.70"
+        classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.9"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: "com.github.sherter.google-java-format"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+    serenityVersion = '2.0.70'
+    serenityCucumberVersion = '1.9.45'
+}
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
+    implementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
+    implementation "org.apache.poi:poi:3.17"
+    implementation "org.apache.poi:poi-ooxml:3.17"
+    implementation "org.apache.commons:commons-lang3:3.9"
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.assertj:assertj-core:3.15.0"
+    testImplementation "org.hamcrest:hamcrest-core:2.2"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-beta4'
+}
+test {
+    systemProperty 'properties', System.getProperty('properties')
+    systemProperty "cucumber.options", System.getProperty("cucumber.options")
+}
+
+verifyGoogleJavaFormat.dependsOn(tasks.googleJavaFormat)
+tasks.withType(Test) {
+    systemProperties = System.properties
+    maxParallelForks = Runtime.runtime.availableProcessors()
+}
+
+gradle.startParameter.continueOnFailure = true
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
