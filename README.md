@@ -1,5 +1,7 @@
-# projectKantar
+# SauceDemo _ POM _ PageFactory _ seleniumWebdriver _ java
 
-IMPORTANT!
-the web site has some problem, when the automation is runnig, the web site is stopped without reason.
-NOTE: i going to send a video with the evidence
+This repository is used to add all practices regarding 
+1. selenium webdriver
+2. page object model
+3. page factory
+4. java
