@@ -1,54 +1,43 @@
 package tests;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import pages.SauceLoginPage;
 
-public class SauceDemoTest {
+import java.time.Duration;
+
+public class SauceDemoTest{
 
     WebDriver driver;
+    String driverPath = "src/utils/chromedriver.exe";
+    String urlPage = "https://www.saucedemo.com/";
 
-    @FindBy(css = ".login_logo")
-    private WebElement loginTitle;
 
-    @FindBy(css = "#user-name")
-    private WebElement inputUserName;
-
-    @FindBy(css = "#password")
-    private WebElement inputPass;
-
-    @FindBy(css = "#login-button")
-    private WebElement btnLogin;
-
-    public void getTitleSauce(){
-        String titleSauceDemo = loginTitle.getText();
-        Assert.assertEquals("Swag Labs", titleSauceDemo);
-        //Assert.assertTrue(titleSauceDemo.contains("Swag Labs"));
-        //Assert.assertTrue(titleSauceDemo.);
-    };
-
-    public void setInputUserName(String userName) {
-        inputUserName.sendKeys(userName);
+    @BeforeTest
+    public void setUp(){
+        System.setProperty("webdriver.chrome.driver", driverPath);
+        driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().window().maximize();
     }
 
-    public void setInputPass(String inPass) {
-        inputPass.sendKeys(inPass);
+    @Test
+    public void  PurchaseAproduct(){
+        // Login on page
+        SauceLoginPage sauceLoginPage = new SauceLoginPage(driver);
+        driver.get(urlPage);
+        sauceLoginPage.getTitleSauce();
+        sauceLoginPage.loginIntoSauceDemo("standard_user", "secret_sauce");
     }
 
-    public void setBtnLogin() {
-        btnLogin.click();
+    @AfterTest
+    public void tearDown(){
+        driver.close();
     }
 
-    public void loginIntoSauceDemo(String user, String pass){
-        this.setInputUserName(user);
-        this.setInputPass(pass);
-        this.setBtnLogin();
-    }
-    public SauceDemoTest(WebDriver driver){
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
+
 
 }
