@@ -29,9 +29,22 @@ public class ProductsPage extends BasePage{
     @FindBy(className = "shopping_cart_link")
     private WebElement btnCart;
 
+    @FindBy(css = "#react-burger-menu-btn")
+    private WebElement menuBurguer;
+
+    @FindBy(css = "#logout_sidebar_link")
+    private WebElement btnLogOut;
+
+
+
 
     public ProductsPage(WebDriver driver){
         super(driver);
+    }
+
+    public void logOutSesion(){
+        menuBurguer.click();
+        btnLogOut.click();
     }
 
 
@@ -48,6 +61,13 @@ public class ProductsPage extends BasePage{
         if(!producList.isEmpty()){
             producList.get(0).click();
         }
+    }
+    public void setThreeProductList(){
+        int numOfButtonsToClick = Math.min(3,producList.size());
+        for (int i=0; i< numOfButtonsToClick; i++){
+            producList.get(i).click();
+        }
+
     }
     public void setBtnCart(){
         btnCart.click();

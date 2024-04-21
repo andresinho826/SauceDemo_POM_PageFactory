@@ -21,7 +21,7 @@ public class SauceDemoTest{
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", driverPath);
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.get(urlPage);
     }
@@ -70,7 +70,26 @@ public class SauceDemoTest{
         completePage.setBtnBackHome();
         ProductsPage productsPage = new ProductsPage(driver);
         productsPage.setProductTitlePage();
-
+    }
+    @Test(priority = 6)
+    public void addToCartProducts(){
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.setThreeProductList();
+        productsPage.setBtnCart();
+    }
+    @Test(priority = 7)
+    public void removeFromCartProducts(){
+        CartPage cartPage = new CartPage(driver);
+        cartPage.setBtnRemove();
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.setThreeProductList();
+    }
+    @Test(priority = 8)
+    public void closeSession(){
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.logOutSesion();
+        SauceLoginPage sauceLoginPage = new SauceLoginPage(driver);
+        sauceLoginPage.getTitleSauce();
     }
     @AfterClass
     public void tearDown(){
