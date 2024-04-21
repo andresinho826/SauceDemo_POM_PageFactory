@@ -1,14 +1,15 @@
 package tests;
 
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-import pages.SauceLoginPage;
+import org.testng.Assert;
+import org.testng.annotations.*;
+import pages.*;
 
 import java.time.Duration;
-
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SauceDemoTest{
 
     WebDriver driver;
@@ -16,24 +17,62 @@ public class SauceDemoTest{
     String urlPage = "https://www.saucedemo.com/";
 
 
-    @BeforeTest
+    @BeforeClass
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", driverPath);
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.manage().window().maximize();
+        driver.get(urlPage);
     }
 
-    @Test
-    public void  PurchaseAproduct(){
+    @Test(priority = 0)
+    public void  loginPage(){
         // Login on page
         SauceLoginPage sauceLoginPage = new SauceLoginPage(driver);
-        driver.get(urlPage);
         sauceLoginPage.getTitleSauce();
         sauceLoginPage.loginIntoSauceDemo("standard_user", "secret_sauce");
+        Assert.assertTrue(sauceLoginPage.succesLogin());
     }
 
-    @AfterTest
+
+    @Test(priority = 1)
+    public void selecProduct(){
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.setProductTitlePage();
+        productsPage.setOneProducList();
+        productsPage.setBtnCart();
+    }
+
+    @Test(priority = 2)
+    public void cartPurchase(){
+        CartPage cartPage = new CartPage(driver);
+        cartPage.setCartTitlePage();
+        cartPage.setBtnCheckout();
+    }
+    @Test(priority = 3)
+    public void fillYourInfo(){
+        YourInformationPage yourInformationPage = new YourInformationPage(driver);
+        yourInformationPage.setYourInfoTitlePage();
+        yourInformationPage.setDatos("Harlen", "Castillo", "0500060");
+    }
+    @Test(priority = 4)
+    public void overViewPage(){
+        OverViewPage overViewPage = new OverViewPage(driver);
+        overViewPage.setOverViewTitlePage();
+        overViewPage.setBtnFinish();
+    }
+    @Test(priority = 5)
+    public void purchaseSucess(){
+        CompletePage completePage = new CompletePage(driver);
+        completePage.setCompleteTitlePage();
+        completePage.setTextOrderComplete();
+        completePage.setBtnBackHome();
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.setProductTitlePage();
+
+    }
+    @AfterClass
     public void tearDown(){
         driver.close();
     }
