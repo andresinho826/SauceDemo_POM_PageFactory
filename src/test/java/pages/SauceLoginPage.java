@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
-public class SauceLoginPage {
+public class SauceLoginPage extends BasePage{
     WebDriver driver;
 
     @FindBy(css = ".login_logo")
@@ -21,14 +21,21 @@ public class SauceLoginPage {
     @FindBy(css = "#login-button")
     private WebElement btnLogin;
 
+    @FindBy(className = "title")
+    private WebElement productTitlePage;
+
     public void getTitleSauce(){
         //Assert.assertTrue(loginTitle.isDisplayed());
-        String titleSauceDemo = loginTitle.getText();
         //System.out.println("AQUIIII" + titleSauceDemo);
         //Assert.assertEquals("Swag Labs", titleSauceDemo);
+
+        String titleSauceDemo = loginTitle.getText();
         Assert.assertTrue(titleSauceDemo.contains("Swag Labs"));
 
-    };
+    }
+    public SauceLoginPage(WebDriver driver){
+        super(driver);
+    }
 
     public void setInputUserName(String userName) {
         inputUserName.sendKeys(userName);
@@ -43,12 +50,17 @@ public class SauceLoginPage {
     }
 
     public void loginIntoSauceDemo(String user, String pass){
-        this.setInputUserName(user);
-        this.setInputPass(pass);
-        this.setBtnLogin();
+        setInputUserName(user);
+        setInputPass(pass);
+        setBtnLogin();
     }
-    public SauceLoginPage(WebDriver driver){
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+    public boolean succesLogin(){
+        isElementDisplayed(productTitlePage);
+        //String testing = productTitlePage.getText();
+        //System.out.println("PAGE LOGIN - LUEGO PRODUCS  ____ "+testing);
+        productTitlePage.isDisplayed();
+        return true;
+
     }
+
 }
